@@ -1,103 +1,96 @@
 # 🧠 Morning Market Brief: Multi-Agent Finance Assistant
 
-A **modular, voice-enabled finance assistant** that delivers real-time market updates using multiple AI agents. It responds to queries like:
+A **modular, voice-enabled finance assistant** that delivers real-time market updates using multiple AI agents.
 
-> _“Today, your Asia tech allocation is 22% of AUM, up from 18% yesterday. TSMC beat estimates by 4%, Samsung missed by 2%...”_
+> “Today, your Asia tech allocation is 22% of AUM, up from 18% yesterday.  
+> TSMC beat estimates by 4%, Samsung missed by 2%. Regional sentiment is neutral.”
 
-Built using **FastAPI**, **Streamlit**, and integrated with tools like `yfinance`, `BeautifulSoup`, `FAISS`, and `HuggingFace`.
+Built with `FastAPI`, `Streamlit`, and integrated tools like `yfinance`, `BeautifulSoup`, `FAISS`, and `HuggingFace`.
 
 ---
 
 ## 🚀 Live Demo
 
-🟡 _Coming Soon_ – Will be hosted using **Streamlit Cloud** and **Dockerized FastAPI** microservice.
+🟡 **Coming Soon** – Will be hosted via Streamlit Cloud & Dockerized FastAPI Microservice
 
 ---
 
 ## 🧩 System Architecture
 
+```text
 [User Query (Voice/Text)]
-↓
-[Streamlit App UI]
-↓
-[FastAPI Orchestrator]
-↓
+         ↓
+  [Streamlit App UI]
+         ↓
+ [FastAPI Orchestrator]
+         ↓
 ┌────────────────────────────┐
-| API | Scrape | RAG | NLP | TTS |
+|   API | Scrape | RAG | NLP | TTS   |
 └────────────────────────────┘
+🧠 Multi-Agent System Overview
+Agent	Responsibility
+📄 API Agent	Fetches stock data (e.g., TSMC, Samsung) using yfinance
+🔍 Scraping Agent	Gathers earnings data using BeautifulSoup
+📚 Retriever Agent	Retrieves financial insights via FAISS + LangChain
+📊 Analysis Agent	Computes portfolio exposure, earnings surprise, and narrative summaries
+🧠 Language Agent	Generates human-like responses using distilgpt2 from HuggingFace
+🎤 Voice Agent	Converts speech to text & vice versa using speech_recognition, gTTS
+🌐 Orchestrator	Coordinates agents using FastAPI
+🖼️ Streamlit App	Web UI for interaction (voice or text), displays responses
 
-markdown
+📁 Project Structure
+bash
 Copy
 Edit
-
-| Agent | Responsibility |
-|-------|----------------|
-| 📄 **API Agent** | Fetches stock data via `yfinance` |
-| 🔍 **Scraping Agent** | Extracts earnings data using `BeautifulSoup` |
-| 📚 **Retriever Agent** | Retrieves insights via `FAISS` + `LangChain` |
-| 📊 **Analysis Agent** | Computes exposure, earnings surprises, summaries |
-| 🧠 **Language Agent** | Generates narrative using `HuggingFace` LLM (distilgpt2) |
-| 🎤 **Voice Agent** | Handles speech-to-text and text-to-speech |
-| 🌐 **Orchestrator** | Manages agent coordination via `FastAPI` |
-| 🖼️ **Streamlit App** | Frontend for voice/text input and verbal responses |
-
----
-
-## 📁 Project Structure
-
 Project_root/
-├── agents/ # Modular AI agents
-│ ├── api_agent.py
-│ ├── scraping_agent.py
-│ ├── retriever_agent.py
-│ ├── analysis_agent.py
-│ ├── language_agent.py
-│ └── voice_agent.py
-├── data_ingestion/ # Data loaders and scrapers
-│ ├── api.py
-│ ├── scraper.py
-│ └── document_loader.py
-├── orchestrator/ # FastAPI microservice
-│ ├── main.py
-│ └── router.py
-├── streamlit_app/ # Streamlit-based UI
-│ └── app.py
-├── tests/ # Unit and integration tests
-│ ├── test_agents.py
-│ └── test_pipeline.py
+├── agents/              # Modular agent logic
+│   ├── api_agent.py
+│   ├── scraping_agent.py
+│   ├── retriever_agent.py
+│   ├── analysis_agent.py
+│   ├── language_agent.py
+│   └── voice_agent.py
+├── data_ingestion/      # Loaders and scrapers
+│   ├── api.py
+│   ├── scraper.py
+│   └── document_loader.py
+├── orchestrator/        # FastAPI backend
+│   ├── main.py
+│   └── router.py
+├── streamlit_app/       # Frontend (Streamlit)
+│   └── app.py
+├── tests/               # Unit & integration tests
+│   ├── test_agents.py
+│   └── test_pipeline.py
 ├── docs/
-│ └── ai_tool_usage.md
+│   └── ai_tool_usage.md
 ├── Dockerfile
 ├── .env
 ├── requirements.txt
 └── README.md
-
-yaml
+🛠️ Setup Instructions
+🔧 Local Development
+bash
 Copy
 Edit
-
----
-
-## 🛠️ Setup Instructions
-
-### 🔧 Local Development
-
-```bash
+# Clone the repository
 git clone https://github.com/jyothir-369/Project_root.git
 cd Project_root
+
+# Install dependencies
 pip install -r requirements.txt
 ⚙️ Run the App
 bash
 Copy
 Edit
-# Run FastAPI Orchestrator
+# Start FastAPI (backend)
 uvicorn orchestrator.main:app --host 0.0.0.0 --port 8000
 
-# Run Streamlit App
+# Start Streamlit (frontend)
 streamlit run streamlit_app/app.py
-Streamlit App: http://localhost:8501
+Streamlit App → http://localhost:8501
 
-FastAPI Docs: http://localhost:8000/docs
+FastAPI Docs → http://localhost:8000/docs
 
 📦 Docker Deployment
 bash
@@ -106,59 +99,52 @@ Edit
 # Build Docker image
 docker build -t market-brief .
 
-# Run container
+# Run the container
 docker run -p 8501:8501 -p 8000:8000 market-brief
 ⚖️ Tech Stack & Justification
 Category	Tool	Reason
-RAG	FAISS + LangChain	Fast local retrieval
-LLM	HuggingFace (distilgpt2)	Lightweight, open-source
-TTS / STT	gTTS + speech_recognition	Simple & deployable
-Market Data	yfinance	Free, easy access
-Scraping	BeautifulSoup	Lightweight and reliable
-Orchestration	FastAPI	Async, microservice-ready
-UI	Streamlit	Great for fast prototyping
+RAG	FAISS + LangChain	Fast, local embedding-based retrieval
+LLM	HuggingFace (distilgpt2)	Open-source, lightweight & customizable
+TTS / STT	gTTS + speech_recognition	Fast, deployable speech interface
+Market Data	yfinance	Free & reliable stock/ETF data
+Scraping	BeautifulSoup	Lightweight for extracting web data
+Orchestration	FastAPI	Async-ready, microservice architecture
+UI	Streamlit	Rapid prototyping and frontend integration
 
 📊 Performance Snapshot
-Component	Latency
+Component	Average Latency
 API Fetch	~1–2s
 Earnings Scrape	~2–3s
-RAG Retrieval	~0.5–1s
-Voice I/O	~2–4s
-Total Response	~5–7s
+RAG Lookup	~0.5–1s
+Voice Input/Output	~2–4s
+End-to-End Query	~5–7s
 
 🧪 Testing
 bash
 Copy
 Edit
 pytest tests/
-test_agents.py – Unit tests for each individual agent
+test_agents.py – Unit tests for each agent
 
-test_pipeline.py – End-to-end pipeline test
+test_pipeline.py – End-to-end system test
 
 📓 AI Tool Usage
-AI-assisted development using Grok-3 for:
+🧠 Developed using AI-assisted scaffolding (Grok-3)
 
-Multi-agent orchestration logic
+🧱 Prompt engineering & multi-agent orchestration logic
 
-RAG prompt engineering
-
-Test generation and scaffolding
-
-Logs and prompts available in docs/ai_tool_usage.md
+📜 Logs stored in docs/ai_tool_usage.md
 
 📎 Notes
-Uses mock portfolio & earnings data for demo
+Uses mock data for portfolios & earnings (can be replaced with real-time feeds)
 
-FastAPI must run separately in production (e.g., Docker or cloud)
+FastAPI backend must be hosted separately in production (Streamlit Cloud doesn’t support custom APIs)
 
-Easily extendable to other regions, sectors, or asset types
+Extendable to new asset classes (commodities, crypto), sectors, or global regions
 
-Voice features can be enhanced with Whisper for better accuracy
+Replace gTTS with Whisper for improved speech accuracy (optional)
 
 🙋‍♂️ Author
 Jyothir Raghavalu Bhogi
 🔗 GitHub: @jyothir-369
-
-📄 License
-This project is licensed under the MIT License – free to use, modify, and distribute.
 
